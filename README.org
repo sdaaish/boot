@@ -1,0 +1,5 @@
+* Simple bootstrap scripts for new installations.
+** Linux
+[[file:boot.sh][file:~/repos/boot/boot.sh]]
+** Windows
+[[file:boot.ps1][file:~/repos/boot/boot.ps1]]
