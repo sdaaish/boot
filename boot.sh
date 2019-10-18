@@ -5,8 +5,8 @@
 mkdir ~/tmp ~/bin ~/repos ~/.ssh ~/.gnupg
 
 sudo apt install --yes git make tmux
-git clone https://github.com/sdaaish/dotfiles.git ~/repos/dotfiles
-make -C ~/repos/dotfiles
+git clone https://github.com/sdaaish/dotfiles.git ~/.config/dotfiles
+make -C ~/.config/dotfiles
 .
 # Source the new profile
 ~/.profile
