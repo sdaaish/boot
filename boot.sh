@@ -2,7 +2,7 @@
 
 # Setup stuff for initial setup
 
-mkdir ~/tmp ~/bin ~/repos ~/.ssh ~/.gnupg
+mkdir ~/tmp ~/bin ~/repos ~/.ssh ~/.gnupg ~/.config
 
 sudo apt install --yes git make tmux
 git clone https://github.com/sdaaish/dotfiles.git ~/.config/dotfiles
