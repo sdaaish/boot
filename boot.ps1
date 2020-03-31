@@ -30,5 +30,5 @@ foreach($repo in $gitrepos.GetEnumerator()){
     $src = $repo.value[0]
     $branch = $repo.value[1]
     $destpath = Join-Path -Path $homedir -ChildPath "repos" -AdditionalChildPath $repo.key
-    git -C $destpath clone -b $branch $src
+    git clone -b $branch $src $destpath
 }
