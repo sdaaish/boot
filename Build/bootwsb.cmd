@@ -1,6 +1,6 @@
 @echo off
 
 :: Local script to test installation in Windows Sandbox
-cd %USERPROFILE%\Desktop\boot
-.\boot.cmd
+cd C:\Users\WDAGUtilityAccount\Desktop\boot
+cmd /c boot.cmd
 

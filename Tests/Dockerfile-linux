@@ -1,0 +1,9 @@
+FROM ubuntu:latest
+
+RUN apt-get update -y && \
+  apt-get install -y git curl ca-certificates --no-install-recommends
+
+COPY ./boot.sh /src/boot.sh
+WORKDIR /root
+
+RUN bash /src/boot.sh
