@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
 
+export ID=$(awk -F "=" '/DISTRIB_ID/{print $2}' /etc/lsb-release)
+export RELEASE=$(awk -F "=" '/DISTRIB_RELEASE/{print $2}' /etc/lsb-release)
+export CODENAME==$(awk -F "=" '/DISTRIB_CODENAME/{print $2}' /etc/lsb-release)
+
 # Setup stuff for initial setup
 
 mkdir ~/tmp ~/bin ~/repos ~/.ssh ~/.gnupg ~/.config
 
 sudo apt install --yes git make tmux
-git clone https://github.com/sdaaish/dotfiles.git ~/.config/dotfiles
-make -C ~/.config/dotfiles
-.
+git clone --depth 1 https://github.com/sdaaish/boot.git ~/repos/boot
+git clone --depth 1 https://github.com/sdaaish/dotfiles.git ~/.config/dotfiles
+
+cd ~/.config/dotfiles
+./setup.sh
+
 # Source the new profile
-~/.profile
+. ~/.profile
 
 # Install packages and settings
 install-emacs-d
