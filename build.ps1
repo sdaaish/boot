@@ -3,23 +3,22 @@
 Function Build-TestDocker {
 
     if ($isWindows){
-        $GitPath = Get-Command "git.exe"
+        $GitPath = (Get-Command "git.exe").source
     }
     else {
-        $GitPath = Get-Command "git"
+        $GitPath = (Get-Command "git").source
     }
 
-    $Project = Get-BuildEnvironment -Path (Split-Path -Path $PSScriptRoot -Parent) -GitPath $GitPath
-    $ProjectManifest = $Project.PSModuleManifest
-    $ProjectName =  $Project.ProjectName
-    $ProjectVersion =  Get-Metadata -Path $ProjectManifest
-    $ProjectPath = $Project.ProjectPath
-    $branch = $Project.BranchName
-    $tag = "${ProjectName}-${branch}:${ProjectVersion}".ToLower()
-
+    $ProjectName =  Get-ProjectName -Path $PSScriptRoot -GitPath $GitPath
+    $ProjectVariable =  Get-BuildVariables -Path $PSScriptRoot
+    $branch = $ProjectVariable.BranchName
+    $ProjectVersion = $ProjectVariable.BuildNumber
+    $tag = "${ProjectName}:${branch}-${ProjectVersion}".ToLower()
+    "$tag"
     $dockeroptions = @(
         "--tag" ,"$tag"
-        "--file" , (Join-Path -Path $PSScriptRoot -ChildPath "Dockerfile")
+        "--file" , (Join-Path -Path $PSScriptRoot -ChildPath "Build/Dockerfile")
+        "$PSScriptroot"
     )
     & docker build @dockeroptions $ProjectPath
 }

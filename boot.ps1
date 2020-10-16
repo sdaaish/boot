@@ -20,7 +20,13 @@ Param (
 )
 
 # Variables
-$homedir = $env:USERPROFILE
+if ($isWindows){
+    $homedir = $env:USERPROFILE
+}
+else {
+    $homedir = $ENV:HOME
+}
+
 # Directories to create
 $dirs = @(
     "tmp"
@@ -36,7 +42,9 @@ $gitrepos = @{
 }
 
 # Set defaults
-Install-PackageProvider -Name NuGet -Force
+if ($isWindows) {
+    Install-PackageProvider -Name NuGet -Force
+}
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 Install-Module -Name PowerShellGet -Repository PSGallery -Force
 Install-Module BuildHelpers -Repository PSGallery -Force
@@ -57,8 +65,11 @@ $LocalRepositorySplat = @{
 Register-PSRepository @LocalRepositorySplat
 Install-Module -Name MyModule -Repository AzurePowershellModules -Force
 Import-Module MyModule -Force
-Install-Scoop
-& scoop install git
+
+if ($isWindows){
+    Install-Scoop
+    & scoop install git
+}
 
 # Clone my github repositories
 foreach($repo in $gitrepos.GetEnumerator()){

@@ -12,7 +12,8 @@ sudo apt install --yes git make tmux
 git clone --depth 1 https://github.com/sdaaish/boot.git ~/repos/boot
 git clone --depth 1 https://github.com/sdaaish/dotfiles.git ~/.config/dotfiles
 
-make -C ~/.config/dotfiles
+cd ~/.config/dotfiles
+./setup.sh
 
 # Source the new profile
 . ~/.profile
