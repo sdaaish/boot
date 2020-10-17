@@ -19,8 +19,11 @@ Param (
 
 )
 
+# Enable logging
+Start-Transcript
+
 # Variables
-if ($isWindows){
+if (-not $isLinux){
     $homedir = $env:USERPROFILE
 }
 else {
@@ -42,7 +45,7 @@ $gitrepos = @{
 }
 
 # Set defaults
-if ($isWindows) {
+if (-not $isLinux) {
     Install-PackageProvider -Name NuGet -Force
 }
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
@@ -66,7 +69,7 @@ Register-PSRepository @LocalRepositorySplat
 Install-Module -Name MyModule -Repository AzurePowershellModules -Force
 Import-Module MyModule -Force
 
-if ($isWindows){
+if (-not $isLinux){
     Install-Scoop
     & scoop install git
 }
@@ -80,3 +83,5 @@ foreach($repo in $gitrepos.GetEnumerator()){
     $destpath = Join-Path -Path $path -ChildPath $repo.key
     git -C $path clone -b $branch $src $destpath
 }
+
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force -Verbose
