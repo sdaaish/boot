@@ -84,4 +84,7 @@ foreach($repo in $gitrepos.GetEnumerator()){
     git -C $path clone -b $branch $src $destpath
 }
 
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force -Verbose
+# Set the executionpolicy for the system and not just the process. Only for Windows
+if (-not $isLinux) {
+    Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force -Verbose
+}
