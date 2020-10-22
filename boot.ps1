@@ -16,7 +16,6 @@ Some notes
 #>
 [cmdletbinding()]
 Param (
-
 )
 
 # Enable logging
@@ -39,9 +38,17 @@ $dirs = @(
     ".local"
     ".config/git"
 )
+
 # Add local repositories
 $gitrepos = @{
     "powershell-stuff" = "https://github.com/sdaaish/powershell-stuff.git", "develop"
+}
+
+# My own repository
+$RepoSource = @{
+    Name = "AzurePowershellModules"
+    Location = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
+    Provider = "NuGet"
 }
 
 # Set defaults
@@ -57,16 +64,18 @@ foreach($dir in $dirs){
     New-Item -Path (Join-Path -Path $homedir -ChildPath $dir) -ItemType Directory -Force
 }
 
-# Register my own repository
+# The settings for my local Powershell Modules Repository
 $LocalRepositorySplat = @{
-    Name = "AzurePowershellModules"
-    SourceLocation = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
-    ScriptSourceLocation = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
+    Name = $RepoSource.Name
+    SourceLocation = $RepoSource.Location
+    ScriptSourceLocation = $RepoSource.Location
     InstallationPolicy = "Trusted"
-    PackageManagementProvider = "NuGet"
+    PackageManagementProvider = $RepoSource.Provider
 }
+
+# Register the repository
 Register-PSRepository @LocalRepositorySplat
-Install-Module -Name MyModule -Repository AzurePowershellModules -Force
+Install-Module -Name MyModule -Repository $RepoSource.Name -Force
 Import-Module MyModule -Force
 
 if (-not $isLinux){
