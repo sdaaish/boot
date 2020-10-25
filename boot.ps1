@@ -53,15 +53,22 @@ $RepoSource = @{
 
 # Set defaults
 if (-not $isLinux) {
-    Install-PackageProvider -Name NuGet -Force
+    try {
+        Get-Package -Name NuGet
+    }
+    catch {
+        Install-PackageProvider -Name NuGet -Scope CurrentUser -Force -ForceBootStrap
+    }
 }
+
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 Install-Module -Name PowerShellGet -Repository PSGallery -Force
 Install-Module BuildHelpers -Repository PSGallery -Force
 
 ## Create directories in $env:USERPROFILE
 foreach($dir in $dirs){
-    New-Item -Path (Join-Path -Path $homedir -ChildPath $dir) -ItemType Directory -Force
+    Write-Host "Creating directory $dir"
+    New-Item -Path (Join-Path -Path $homedir -ChildPath $dir) -ItemType Directory -Force|Out-Null
 }
 
 # The settings for my local Powershell Modules Repository
@@ -80,7 +87,12 @@ Import-Module MyModule -Force
 
 if (-not $isLinux){
     Install-Scoop
-    & scoop install git
+    try {
+        & scoop install git
+    }
+    catch {
+        Write-Error "Scoop already installed."
+    }
 }
 
 # Clone my github repositories
@@ -90,7 +102,14 @@ foreach($repo in $gitrepos.GetEnumerator()){
 
     $path = Join-Path -Path $homedir -ChildPath "repos"
     $destpath = Join-Path -Path $path -ChildPath $repo.key
-    git -C $path clone -b $branch $src $destpath
+
+    try {
+        Write-Host "Cloning ${src} to ${destpath}" 
+        git -C $path clone -b $branch $src $destpath
+    }
+    catch {
+        Write-Error "$destpath not empty!"
+    }
 }
 
 # Set the executionpolicy for the system and not just the process. Only for Windows
