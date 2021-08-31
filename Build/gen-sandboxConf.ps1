@@ -26,6 +26,7 @@ $cmdContent = @"
 :: Local script to test installation in Windows Sandbox
 cd C:\Users\WDAGUtilityAccount\Desktop\boot
 cmd /c boot.cmd
+
 "@
 
 # Generate the wsb-file to use to start the sandbox from Windows (outside).
@@ -43,10 +44,11 @@ $wsbContent = @"
    <Command>cmd.exe /c C:\Users\WDAGUtilityAccount\Desktop\boot\Build\boot-sandbox.cmd</Command>
 </LogonCommand>
 </Configuration>
+
 "@
 
-Set-Content -Path $wsbFile -Value $wsbContent -Force
-Set-Content -Path $cmdFile -Value $cmdContent -Force
+Set-Content -Path $wsbFile -Value $wsbContent -Force -Encoding utf8 -NoNewLine
+Set-Content -Path $cmdFile -Value $cmdContent -Force -Encoding utf8 -NoNewLine
 
 Write-Output "Generated Windows sandbox file in ${wsbFile}."
 Write-Output "Start sandbox with '& .\'${wsbFile}."

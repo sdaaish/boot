@@ -16,7 +16,6 @@ Some notes
 #>
 [cmdletbinding()]
 Param (
-
 )
 
 # Enable logging
@@ -39,49 +38,88 @@ $dirs = @(
     ".local"
     ".config/git"
 )
+
 # Add local repositories
 $gitrepos = @{
     "powershell-stuff" = "https://github.com/sdaaish/powershell-stuff.git", "develop"
 }
 
-# Set defaults
-if (-not $isLinux) {
-    Install-PackageProvider -Name NuGet -Force
+# My own repository
+$RepoSource = @{
+    Name = "AzurePowershellModules"
+    Location = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
+    Provider = "NuGet"
 }
+
+# Set defaults
+Write-Verbose "Installing NuGet"
+if (-not $isLinux) {
+    try {
+        Get-PackageProvider -Name NuGet -ErrorAction Stop| Out-Null
+    }
+    catch {
+        Install-PackageProvider -Name NuGet -Scope CurrentUser -Force -ForceBootStrap
+    }
+}
+
+Write-Verbose "Installing modules"
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-Install-Module -Name PowerShellGet -Repository PSGallery -Force
-Install-Module BuildHelpers -Repository PSGallery -Force
+Install-Module -Name PowerShellGet -Repository PSGallery -Scope CurrentUser -MinimumVersion 2.2.5 -AllowClobber -Force
+Install-Module -Name BuildHelpers -Repository PSGallery -Scope CurrentUser -Force
 
 ## Create directories in $env:USERPROFILE
 foreach($dir in $dirs){
-    New-Item -Path (Join-Path -Path $homedir -ChildPath $dir) -ItemType Directory -Force
+    Write-Host "Creating directory $dir"
+    New-Item -Path (Join-Path -Path $homedir -ChildPath $dir) -ItemType Directory -Force|Out-Null
 }
 
-# Register my own repository
+# The settings for my local Powershell Modules Repository
 $LocalRepositorySplat = @{
-    Name = "AzurePowershellModules"
-    SourceLocation = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
-    ScriptSourceLocation = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
+    Name = $RepoSource.Name
+    SourceLocation = $RepoSource.Location
+    ScriptSourceLocation = $RepoSource.Location
     InstallationPolicy = "Trusted"
-    PackageManagementProvider = "NuGet"
+    PackageManagementProvider = $RepoSource.Provider
 }
+
+# Register the repository
+Write-Verbose "Registering my module."
 Register-PSRepository @LocalRepositorySplat
-Install-Module -Name MyModule -Repository AzurePowershellModules -Force
+Install-Module -Name MyModule -Repository $RepoSource.Name -Scope CurrentUser -Force
 Import-Module MyModule -Force
 
 if (-not $isLinux){
+    Write-Verbose "Installing scoop."
     Install-Scoop
-    & scoop install git
+    try {
+        & scoop install git
+    }
+    catch {
+        Write-Error "git already installed."
+    }
 }
 
 # Clone my github repositories
+Write-Verbose "Downloading repositories from github. "
 foreach($repo in $gitrepos.GetEnumerator()){
     $src = $repo.value[0]
     $branch = $repo.value[1]
 
     $path = Join-Path -Path $homedir -ChildPath "repos"
     $destpath = Join-Path -Path $path -ChildPath $repo.key
-    git -C $path clone -b $branch $src $destpath
+
+    try {
+        Write-Host "Cloning ${src} to ${destpath}"
+        git -C $path clone -b $branch $src $destpath
+    }
+    catch {
+        Write-Error "$destpath not empty!"
+    }
 }
 
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force -Verbose
+# Set the executionpolicy for the system and not just the process. Only for Windows
+if (-not $isLinux) {
+    Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force -Verbose -ErrorAction Ignore
+}
+
+Stop-Transcript
