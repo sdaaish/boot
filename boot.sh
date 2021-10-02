@@ -24,7 +24,6 @@ cd ~/.config/dotfiles || exit
 . ~/.profile
 
 # Install packages and settings
-install-emacs-d
 install-emacs-snapshot
 install-git-latest
 #install-lxss-basic
