@@ -10,10 +10,10 @@ CODENAME=$(awk -F "=" '/DISTRIB_CODENAME/{print $2}' /etc/lsb-release)
 export CODENAME
 
 # Setup stuff for initial setup
+mkdir ~/tmp ~/repos ~/.ssh ~/.config
 
-mkdir ~/tmp ~/bin ~/repos ~/.ssh ~/.gnupg ~/.config
-
-sudo apt install --yes git make tmux
+sudo apt-get update
+sudo apt install --yes git make tmux stow curl wget
 git clone --depth 1 https://github.com/sdaaish/boot.git ~/repos/boot
 git clone --depth 1 https://github.com/sdaaish/dotfiles.git ~/.config/dotfiles
 
