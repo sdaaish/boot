@@ -11,9 +11,10 @@ export CODENAME
 
 # Setup stuff for initial setup
 
-mkdir ~/tmp ~/bin ~/repos ~/.ssh ~/.gnupg ~/.config
+mkdir ~/tmp ~/repos ~/.ssh  ~/.config
 
-sudo apt install --yes git make tmux
+sudo apt-get update
+sudo apt install --yes git make tmux stow curl wget
 git clone --depth 1 https://github.com/sdaaish/boot.git ~/repos/boot
 git clone --depth 1 https://github.com/sdaaish/dotfiles.git ~/.config/dotfiles
 
@@ -24,7 +25,7 @@ cd ~/.config/dotfiles || exit
 . ~/.profile
 
 # Install packages and settings
-install-emacs-d
+#install-emacs-d
 install-emacs-snapshot
 install-git-latest
 #install-lxss-basic
