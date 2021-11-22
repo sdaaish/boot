@@ -10,27 +10,27 @@ CODENAME=$(awk -F "=" '/DISTRIB_CODENAME/{print $2}' /etc/lsb-release)
 export CODENAME
 
 # Setup stuff for initial setup
-mkdir ~/tmp ~/repos ~/.ssh ~/.config
+mkdir ${HOME}/{tmp,repos,.ssh,.config}
 
-sudo apt-get update
+sudo apt-get update --yes
 sudo apt install --yes git make tmux stow curl wget
-git clone --depth 1 https://github.com/sdaaish/boot.git ~/repos/boot
-git clone --depth 1 https://github.com/sdaaish/dotfiles.git ~/.config/dotfiles
+git clone --depth 1 https://github.com/sdaaish/boot.git ${HOME}/repos/boot
+git clone --depth 1 https://github.com/sdaaish/dotfiles.git ${HOME}/.config/dotfiles
 
-cd ~/.config/dotfiles || exit
+cd ${HOME}/.config/dotfiles || exit
 ./setup.sh
 
 # Source the new profile
-. ~/.profile
+. ${HOME}/.profile
 
 # Install packages and settings
-install-emacs-snapshot
-install-git-latest
-#install-lxss-basic
+install-linux-basic
 install-domain-tool
+install-git-latest
+install-emacs-snapshot
 #install-net-stuff
-#install-fun-stuff
 install-powershell
+install-fun-stuff
 #install-jekyll
 #install-keybase-full
 install-keybase-cli
