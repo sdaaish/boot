@@ -22,8 +22,10 @@ Param (
 Start-Transcript
 
 # Variables
-if (-not $isLinux){
+if (-not $isLinux){     # Windows
     $homedir = $env:USERPROFILE
+    [Environment]::SetEnvironmentVariable("GIT_SSH", "$((Get-Command ssh.exe).Source)", [System.EnvironmentVariableTarget]::User)
+    [Environment]::SetEnvironmentVariable("HOME", "$homedir", [System.EnvironmentVariableTarget]::User)
 }
 else {
     $homedir = $ENV:HOME
