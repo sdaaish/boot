@@ -22,7 +22,7 @@ Param (
 Start-Transcript
 
 # Variables
-if (-not $isLinux){
+if (-not $isLinux){     # Windows
     $homedir = $env:USERPROFILE
 }
 else {
@@ -36,8 +36,16 @@ $dirs = @(
     "bin"
     "work"
     ".local"
+    ".local/WindowsPowerShell"
+    ".local/PowerShell"
     ".config/git"
 )
+
+## Create directories in $env:USERPROFILE
+foreach($dir in $dirs){
+    Write-Host "Creating directory $dir"
+    New-Item -Path (Join-Path -Path $homedir -ChildPath $dir) -ItemType Directory -Force|Out-Null
+}
 
 # Add local repositories
 $gitrepos = @{
@@ -62,16 +70,26 @@ if (-not $isLinux) {
     }
 }
 
+# Save modules to local storage
+if ($isLinux){
+    $ModulePath = Resolve-Path "~/.local/share/powershell/Modules"
+}
+else {
+    # Check wich version of Powershell
+    switch ($PSVersionTable.PSEdition){
+        "Core" {$version = "PowerShell/Modules"}
+        "Desktop" { $version = "WindowsPowerShell/Modules"}
+    }
+    $ModulePath = Join-Path -Path (Resolve-Path "~/.local") -ChildPath $version
+}
+
+# Add local Module-drirectory to ModulePath
+$env:PSModulePath = $env:PSModulePath + ";${ModulePath};"
+
 Write-Verbose "Installing modules"
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-Install-Module -Name PowerShellGet -Repository PSGallery -Scope CurrentUser -MinimumVersion 2.2.5 -AllowClobber -Force
-Install-Module -Name BuildHelpers -Repository PSGallery -Scope CurrentUser -Force
-
-## Create directories in $env:USERPROFILE
-foreach($dir in $dirs){
-    Write-Host "Creating directory $dir"
-    New-Item -Path (Join-Path -Path $homedir -ChildPath $dir) -ItemType Directory -Force|Out-Null
-}
+Save-Module -Name PowerShellGet -Path $ModulePath -Repository PSGallery -MinimumVersion 2.2.5 -Force
+Save-Module -Name BuildHelpers -Path $ModulePath -Repository PSGallery -Force
 
 # The settings for my local Powershell Modules Repository
 $LocalRepositorySplat = @{
@@ -85,7 +103,7 @@ $LocalRepositorySplat = @{
 # Register the repository
 Write-Verbose "Registering my module."
 Register-PSRepository @LocalRepositorySplat
-Install-Module -Name MyModule -Repository $RepoSource.Name -Scope CurrentUser -Force
+Save-Module -Name MyModule -Path $ModulePath -Repository $RepoSource.Name -Force
 Import-Module MyModule -Force
 
 if (-not $isLinux){
