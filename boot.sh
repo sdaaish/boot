@@ -10,7 +10,7 @@ CODENAME=$(awk -F "=" '/DISTRIB_CODENAME/{print $2}' /etc/lsb-release)
 export CODENAME
 
 # Setup stuff for initial setup
-mkdir ${HOME}/{tmp,repos,.ssh,.config}
+mkdir ${HOME}/{tmp,repos,.ssh,.config} 2>/dev/null
 
 sudo apt-get update --yes
 sudo apt install --yes git make tmux stow curl wget
@@ -24,7 +24,7 @@ cd ${HOME}/.config/dotfiles || exit
 . ${HOME}/.profile
 
 # Install packages and settings
-install-linux-basic
+install-lxss-basic
 install-domain-tool
 install-git-latest
 install-emacs-snapshot
@@ -33,7 +33,7 @@ install-powershell
 install-fun-stuff
 #install-jekyll
 #install-keybase-full
-install-keybase-cli
+#install-keybase-cli
 #install-mailtools
 #install-keepass
 #install-docker-for-wsl
