@@ -13,9 +13,12 @@ export CODENAME
 mkdir ${HOME}/{tmp,repos,.ssh,.config} 2>/dev/null
 
 sudo apt-get update --yes
-sudo apt install --yes git make tmux stow curl wget
+sudo apt install --yes git make tmux stow curl wget keychain ssh-askpass
 git clone --depth 1 https://github.com/sdaaish/boot.git ${HOME}/repos/boot
 git clone --depth 1 https://github.com/sdaaish/dotfiles.git ${HOME}/.config/dotfiles
+
+rm ${HOME}/.bash*
+rm ${HOME}/.profile
 
 cd ${HOME}/.config/dotfiles || exit
 ./setup.sh
