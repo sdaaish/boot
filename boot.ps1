@@ -113,7 +113,7 @@ if (-not $isLinux){
 }
 
 # Get dotgit repository
-Install-DotGit
+Install-DotGit -Force
 
 # Set the executionpolicy for the system and not just the process. Only for Windows
 if (-not $isLinux) {
