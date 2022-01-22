@@ -47,11 +47,6 @@ foreach($dir in $dirs){
     New-Item -Path (Join-Path -Path $homedir -ChildPath $dir) -ItemType Directory -Force|Out-Null
 }
 
-# Add local repositories
-$gitrepos = @{
-    "powershell-stuff" = "https://github.com/sdaaish/powershell-stuff.git", "develop"
-}
-
 # My own repository
 $RepoSource = @{
     Name = "AzurePowershellModules"
@@ -117,23 +112,8 @@ if (-not $isLinux){
     }
 }
 
-# Clone my github repositories
-Write-Verbose "Downloading repositories from github. "
-foreach($repo in $gitrepos.GetEnumerator()){
-    $src = $repo.value[0]
-    $branch = $repo.value[1]
-
-    $path = Join-Path -Path $homedir -ChildPath "repos"
-    $destpath = Join-Path -Path $path -ChildPath $repo.key
-
-    try {
-        Write-Host "Cloning ${src} to ${destpath}"
-        git -C $path clone -b $branch $src $destpath
-    }
-    catch {
-        Write-Error "$destpath not empty!"
-    }
-}
+# Get dotgit repository
+Install-DotGit
 
 # Set the executionpolicy for the system and not just the process. Only for Windows
 if (-not $isLinux) {
