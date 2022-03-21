@@ -32,8 +32,8 @@ install-domain-tool
 install-git-latest
 install-emacs-snapshot
 #install-net-stuff
-install-powershell
-install-fun-stuff
+#install-powershell
+#install-fun-stuff
 #install-jekyll
 #install-keybase-full
 #install-keybase-cli
@@ -45,4 +45,5 @@ install-fun-stuff
 #get-bbk
 get-base16
 get-powerline-fonts
+get-fonts
 get-tmux-plugin-manager
