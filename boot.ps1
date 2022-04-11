@@ -35,6 +35,7 @@ $dirs = @(
     "repos"
     "bin"
     "work"
+    "code"
     ".local"
     ".local/WindowsPowerShell"
     ".local/PowerShell"
