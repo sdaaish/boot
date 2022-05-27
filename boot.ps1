@@ -79,7 +79,7 @@ else {
     $ModulePath = Join-Path -Path (Resolve-Path "~/.local") -ChildPath $version
 }
 
-# Add local Module-drirectory to ModulePath
+# Add local Module-directory to ModulePath
 $env:PSModulePath = $env:PSModulePath + ";${ModulePath};"
 
 Write-Verbose "Installing modules"
