@@ -59,12 +59,17 @@ $RepoSource = @{
 Write-Verbose "Installing NuGet"
 if (-not $isLinux) {
     try {
-        Get-PackageProvider -Name NuGet -ErrorAction Stop| Out-Null
+        Get-PackageProvider -Name NuGet -ForceBootStrap -ErrorAction Stop| Out-Null
     }
     catch {
         Install-PackageProvider -Name NuGet -Scope CurrentUser -Force -ForceBootStrap
     }
+    finally {
+	Register-PackageSource -Name nuget.org -Location https://www.nuget.org/api/v2 -ProviderName NuGet
+	Set-PackageSource -Name nuget.org -Trusted
+    }
 }
+
 
 # Save modules to local storage
 if ($isLinux){
@@ -98,20 +103,37 @@ $LocalRepositorySplat = @{
 
 # Register the repository
 Write-Verbose "Registering my module."
-Register-PSRepository @LocalRepositorySplat
+Register-PSRepository @LocalRepositorySplat -ErrorAction Ignore
 Save-Module -Name MyModule -Path $ModulePath -Repository $RepoSource.Name -Force
 Import-Module MyModule -Force
 
 if (-not $isLinux){
-    Write-Verbose "Installing scoop."
-    Install-Scoop
+    Write-Verbose "Installing winget."
     try {
-        & scoop install git
+	Install-Winget -ErrorAction Stop
     }
     catch {
-        Write-Error "git already installed."
+	throw "Failed to install winget"
     }
 }
+
+# Install software with Winget
+& winget install Git.Git --source winget  --accept-package-agreements --accept-source-agreements
+& winget install 7zip.7zip --source winget --accept-package-agreements --accept-source-agreements --silent
+& winget install Microsoft.PowerShell --source winget --accept-package-agreements --accept-source-agreements --silent
+
+# Windows Terminal needs a workaround, see https://github.com/microsoft/winget-cli/issues/2176
+& winget install  Microsoft.WindowsTerminal --source winget --accept-package-agreements --accept-source-agreements  --version 1.12.10982.0 --scope user
+
+# Create path to make the rest work
+$path =  $(
+    'C:\Program Files\Git\bin'
+    'C:\Program Files\7-Zip'
+    'C:\Program Files\PowerShell\7'
+)
+
+$oldpath =$env:path -split ";"
+$env:path = (($oldpath + $path) -join ";") -replace ';;+',';'
 
 # Get dotgit repository
 Install-DotGit -Force
