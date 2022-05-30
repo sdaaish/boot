@@ -37,8 +37,8 @@ $dirs = @(
     "work"
     "code"
     ".local"
-    ".local/WindowsPowerShell"
-    ".local/PowerShell"
+    ".local/WindowsPowerShell/Modules"
+    ".local/PowerShell/Modules"
     ".config/git"
 )
 
@@ -69,7 +69,6 @@ if (-not $isLinux) {
 	Set-PackageSource -Name nuget.org -Trusted
     }
 }
-
 
 # Save modules to local storage
 if ($isLinux){
@@ -137,6 +136,16 @@ $env:path = (($oldpath + $path) -join ";") -replace ';;+',';'
 
 # Get dotgit repository
 Install-DotGit -Force
+
+$text = @"
+`$StartTime = Get-Date
+. ~/.config/powershell/profile.ps1
+"@
+
+$DesktopProfile = powershell -Command {$profile} -Nolo -Nop -Exe Bypass
+$CoreProfile = pwsh -Command {$profile} -Nolo -Nop -Exe Bypass
+Add-Content -Path $DesktopProfile -Value $text
+Add-Content -Path $Core -Value $text
 
 # Set the executionpolicy for the system and not just the process. Only for Windows
 if (-not $isLinux) {
