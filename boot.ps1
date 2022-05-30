@@ -144,8 +144,10 @@ $text = @"
 
 $DesktopProfile = powershell -Command {$profile} -Nolo -Nop -Exe Bypass
 $CoreProfile = pwsh -Command {$profile} -Nolo -Nop -Exe Bypass
+New-Item -Path (Split-Path $DesktopProfile -Parent) -ItemType Directory
+New-Item -Path (Split-Path $CoreProfile -Parent) -ItemType Directory
 Add-Content -Path $DesktopProfile -Value $text
-Add-Content -Path $Core -Value $text
+Add-Content -Path $CoreProfile -Value $text
 
 # Set the executionpolicy for the system and not just the process. Only for Windows
 if (-not $isLinux) {
