@@ -120,15 +120,17 @@ if (-not $isLinux){
 & winget install Git.Git --source winget  --accept-package-agreements --accept-source-agreements
 & winget install 7zip.7zip --source winget --accept-package-agreements --accept-source-agreements --silent
 & winget install Microsoft.PowerShell --source winget --accept-package-agreements --accept-source-agreements --silent
+& winget install Starship.Starship --source winget --accept-package-agreements --accept-source-agreements --silent
 
 # Windows Terminal needs a workaround, see https://github.com/microsoft/winget-cli/issues/2176
 & winget install  Microsoft.WindowsTerminal --source winget --accept-package-agreements --accept-source-agreements  --version 1.12.10982.0 --scope user
 
 # Create path to make the rest work
 $path =  $(
+		'C:\Program Files\PowerShell\7'
     'C:\Program Files\Git\bin'
     'C:\Program Files\7-Zip'
-    'C:\Program Files\PowerShell\7'
+		'C:\Program Files\starship\bin\'
 )
 
 $oldpath =$env:path -split ";"
@@ -144,8 +146,8 @@ $text = @"
 
 $DesktopProfile = powershell -Command {$profile} -Nolo -Nop -Exe Bypass
 $CoreProfile = pwsh -Command {$profile} -Nolo -Nop -Exe Bypass
-New-Item -Path (Split-Path $DesktopProfile -Parent) -ItemType Directory
-New-Item -Path (Split-Path $CoreProfile -Parent) -ItemType Directory
+New-Item -Path (Split-Path $DesktopProfile -Parent) -ItemType Directory -Force|Out-Null
+New-Item -Path (Split-Path $CoreProfile -Parent) -ItemType Directory -Force|Out-Null
 Add-Content -Path $DesktopProfile -Value $text
 Add-Content -Path $CoreProfile -Value $text
 
