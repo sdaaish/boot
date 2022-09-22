@@ -21,6 +21,28 @@ Param (
 # Enable logging
 Start-Transcript
 
+# To check if admin
+Function Test-Administrator {
+    param()
+
+    # Check for admin rights
+    $wid = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+    $prp = New-Object System.Security.Principal.WindowsPrincipal($wid)
+    $adm = [System.Security.Principal.WindowsBuiltInRole]::Administrator
+    $prp.IsInRole($adm)
+}
+
+if (-not (Test-Administrator)) {
+    throw "Need to run this Administrator"
+}
+
+# Add certificates if they exist. Useful for testing the build.
+$Path = Join-Path $PSScriptRoot Build
+Get-ChildItem -Path $Path -File -Filter *.cer | Foreach-Object {
+    Write-verbose "Installing certificate: ${$_.FullName}"
+    certutil -addstore Root $_.FullName
+}
+
 # Variables
 if (-not $isLinux){     # Windows
     $homedir = $env:USERPROFILE
@@ -73,8 +95,7 @@ if (-not $isLinux) {
 # Save modules to local storage
 if ($isLinux){
     $ModulePath = Resolve-Path "~/.local/share/powershell/Modules"
-}
-else {
+} else {
     # Check wich version of Powershell
     switch ($PSVersionTable.PSEdition){
         "Core" {$version = "PowerShell/Modules"}
@@ -88,8 +109,16 @@ $env:PSModulePath = $env:PSModulePath + ";${ModulePath};"
 
 Write-Verbose "Installing modules"
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+
 Save-Module -Name PowerShellGet -Path $ModulePath -Repository PSGallery -MinimumVersion 2.2.5 -Force
 Save-Module -Name BuildHelpers -Path $ModulePath -Repository PSGallery -Force
+Save-Module -Name Posh-Git -Path $ModulePath -Repository PSGallery -Force
+Save-Module -Name Terminal-Icons -Path $ModulePath -Repository PSGallery -Force
+
+switch ($version) {
+    "Desktop" {Save-Module PSReadLine -Path 'C:\Program Files\WindowsPowerShell\Modules\' -Force}
+    "Core" {Save-Module PSReadLine -Path 'C:\Program Files\PowerShell\Modules\' -Force}
+}
 
 # The settings for my local Powershell Modules Repository
 $LocalRepositorySplat = @{

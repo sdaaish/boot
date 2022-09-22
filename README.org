@@ -29,6 +29,7 @@ iwr "https://boot.charlottendal.net/boot.ps1" -OutFile boot.ps1
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 .\boot.ps1
 #+end_src
+
 * Install basic PowerShell profile
 Install a PowerShell profile on systems that should have a minimum of third party software installed, like servers.
 This will most likely only work on the =Desktop= version of PowerShell on Windows, ie 4.0 and up.
@@ -44,3 +45,10 @@ Set-PSConsole
 #+end_src
 
 [[https://github.com/sdaaish/boot][GitHub src]]
+
+** Testing
+Put certificates if needed in the *Build* folder and do a =gen-sandboxconf.ps1= in that folder.
+Start with =.\boot-sandbox.wsb=
+
+This will start the Windows sandbox and run the installation.
+
