@@ -1,47 +1,39 @@
-* Options :noexport:ARCHIVE:
-#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:{} arch:headline
-#+options: author:t broken-links:nil c:nil creator:nil
-#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
-#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
-#+options: timestamp:t title:t toc:t todo:t |:t
+* Options                                                  :noexport:ARCHIVE:
 #+title: README
-#+date: <2019-10-03 Thu>
-#+author: Stig Dahl
-#+email: stig.dahl@svenskaspel.se
-#+language: en
-#+select_tags: export
-#+exclude_tags: noexport
-#+creator: Emacs 27.0.50 (Org mode 9.2.6)
-
-#+options: html-link-use-abs-url:nil html-postamble:auto
-#+options: html-preamble:t html-scripts:t html-style:t
-#+options: html5-fancy:nil tex:t
-#+html_doctype: xhtml-strict
-#+html_container: div
-#+description:
-#+keywords:
-#+html_link_home:
-#+html_link_up:
-#+html_mathjax:
-#+html_head:
-#+html_head_extra:
-#+subtitle:
-#+infojs_opt:
-#+creator: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.0.50 (<a href="https://orgmode.org">Org</a> mode 9.2.6)
+#+options: toc:nil num:nil author:nil creator:nil date:nil timestamp:nil
+#+html_head: <link rel="stylesheet" type="text/css" href="css/simple.css" />
+#+html_head: <style> #content{max-width:1800px;}</style>
+#+html_head_extra: <style type="text/css">
+#+html_head_extra:  pre.src-powershell{ background:#191970;color:#daa520;}
+#+html_head_extra:  pre.src-shell{ color:black;}
+#+html_head_extra:  pre.src:hover:before { display: none; }
+#+html_head_extra:  pre.example{ background:#e3e3e3; color:black; }
+#+html_head_extra: </style>
 
 
 * Simple bootstrap scripts for new installations.
+The intention for these scripts are to setup a new system in a standardized way with minimum user intervention.
+But a lot of things might need customization anyway. Works on my machine...
 ** Linux
 [[file:boot.sh][boot.sh]]
 *** Install
-#+begin_src sh
+#+begin_src shell
 curl https://raw.githubusercontent.com/sdaaish/boot/master/boot.sh|bash
 #+end_src
 ** Windows
 [[file:boot.ps1][boot.ps1]]
 *** Install
+In powershell as admin.
 #+begin_src powershell
 iwr "https://raw.githubusercontent.com/sdaaish/boot/master/boot.ps1" -OutFile boot.ps1
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 .\boot.ps1
+#+end_src
+* Install basic PowerShell profile
+Install a PowerShell profile on systems that should have a minimum of third party software installed, like servers.
+This will most likely only work on the =Desktop= version of PowerShell on Windows.
+#+begin_src powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+New-Item $Profile.CurrentUserAllHosts -Force
+iwr "https://raw.githubusercontent.com/sdaaish/boot/master/profile.ps1" -OutFile $Profile.CurrentUserAllHosts
 #+end_src
