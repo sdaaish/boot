@@ -4,6 +4,8 @@ $readline = @{
     HistorySearchCursorMovesToEnd = $true
     ContinuationPrompt = ">>"
     BellStyle = "None"
+    PredictionSource = "HistoryAndPlugin"
+    PredictionViewStyle = "InLineView"
 }
 
 Set-PSReadLineOption @readline
@@ -14,15 +16,25 @@ function prompt {
     $history = @(Get-History)
     if($history.Count -gt 0)
     {
-	$lastItem = $history[$history.Count - 1]
-	$lastId = $lastItem.Id
+	      $lastItem = $history[$history.Count - 1]
+	      $lastId = $lastItem.Id
     }
 
     $nextCommand = $lastId + 1
     $currentDirectory = Get-Location
     $time = Get-Date -Format "yyyy-MM-dd HH:mm"
-    Write-Host "${time} [PS:${PSEdition}] - ${nextCommand} - ${env:USERNAME}@${env:COMPUTERNAME} ${currentDirectory}`n>" -ForeGroundColor 10 -NoNewLine
-return " "
+
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal] $identity
+    $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
+
+    $context = $(if (Test-Path variable:/PSDebugContext) { "[DBG]" }
+                 elseif($principal.IsInRole($adminRole)) { "[ADMIN]" }
+                 else { '' }
+     )
+
+    Write-Host "${time} [PS:${PSEdition}] - ${nextCommand} - ${env:USERNAME}@${env:COMPUTERNAME} ${currentDirectory}`n${context} >" -ForeGroundColor 10 -NoNewLine
+    return " "
 }
 
 function ls {
@@ -66,7 +78,27 @@ function gh([string]$help) {
     Get-Help -Name $help -Online
 }
 
-
 Function src {
     . $Profile
+}
+
+Function Test-Administrator {
+    [cmdletbinding()]
+    param()
+
+    # Check for admin rights
+    $wid = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+    $prp = New-Object System.Security.Principal.WindowsPrincipal($wid)
+    $adm = [System.Security.Principal.WindowsBuiltInRole]::Administrator
+    $prp.IsInRole($adm)
+}
+
+# PSReadLine usually needs an update
+Function Update-PSReadLine {
+    if (Test-Administrator){
+        Save-Module -Name PSReadLine -Path "C:\Program Files\WindowsPowerShell\Modules" -Force
+    }
+    else {
+        Start-Process powershell.exe -ArgumentList '-NoProfile Save-Module -Name PSReadLine -Path "C:\Program Files\WindowsPowerShell\Modules" -Force' -Verb RunAs
+    }
 }
