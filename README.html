@@ -203,46 +203,46 @@ pre.example{ background:#e3e3e3; color:black; }
 <body>
 <div id="content" class="content">
 <h1 class="title">README</h1>
-<div id="outline-container-org179857a" class="outline-2">
-<h2 id="org179857a">Simple bootstrap scripts for new installations.</h2>
-<div class="outline-text-2" id="text-org179857a">
+<div id="outline-container-orgb2f3276" class="outline-2">
+<h2 id="orgb2f3276">Simple bootstrap scripts for new installations.</h2>
+<div class="outline-text-2" id="text-orgb2f3276">
 <p>
 The intention for these scripts are to setup a new system in a standardized way with minimum user intervention.
 But a lot of things might need customization anyway. Works on my machine&#x2026;
 </p>
 </div>
-<div id="outline-container-org0f9f3d0" class="outline-3">
-<h3 id="org0f9f3d0">Linux</h3>
-<div class="outline-text-3" id="text-org0f9f3d0">
+<div id="outline-container-org7915c47" class="outline-3">
+<h3 id="org7915c47">Linux</h3>
+<div class="outline-text-3" id="text-org7915c47">
 <p>
 <a href="boot.sh">boot.sh</a>
 </p>
 </div>
-<div id="outline-container-orgf3858b7" class="outline-4">
-<h4 id="orgf3858b7">Install</h4>
-<div class="outline-text-4" id="text-orgf3858b7">
+<div id="outline-container-org775ba92" class="outline-4">
+<h4 id="org775ba92">Install</h4>
+<div class="outline-text-4" id="text-org775ba92">
 <div class="org-src-container">
-<pre class="src src-shell">curl https://raw.githubusercontent.com/sdaaish/boot/master/boot.sh|bash
+<pre class="src src-shell">curl https://boot.charlottendal.net/boot.sh|bash
 </pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org754189c" class="outline-3">
-<h3 id="org754189c">Windows</h3>
-<div class="outline-text-3" id="text-org754189c">
+<div id="outline-container-org696bf85" class="outline-3">
+<h3 id="org696bf85">Windows</h3>
+<div class="outline-text-3" id="text-org696bf85">
 <p>
 <a href="boot.ps1">boot.ps1</a>
 </p>
 </div>
-<div id="outline-container-org15314b0" class="outline-4">
-<h4 id="org15314b0">Install</h4>
-<div class="outline-text-4" id="text-org15314b0">
+<div id="outline-container-org31e3889" class="outline-4">
+<h4 id="org31e3889">Install</h4>
+<div class="outline-text-4" id="text-org31e3889">
 <p>
 In powershell as admin.
 </p>
 <div class="org-src-container">
-<pre class="src src-powershell">iwr <span style="color: #c3e88d;">"https://raw.githubusercontent.com/sdaaish/boot/master/boot.ps1"</span> <span style="color: #f78c6c;">-OutFile</span> boot.ps1
+<pre class="src src-powershell">iwr <span style="color: #c3e88d;">"https://boot.charlottendal.net/boot.ps1"</span> <span style="color: #f78c6c;">-OutFile</span> boot.ps1
 <span style="color: #82aaff;">Set-ExecutionPolicy</span> <span style="color: #f78c6c;">-Scope</span> CurrentUser <span style="color: #f78c6c;">-ExecutionPolicy</span> RemoteSigned <span style="color: #f78c6c;">-Force</span>
 .\boot.ps1
 </pre>
@@ -251,9 +251,9 @@ In powershell as admin.
 </div>
 </div>
 </div>
-<div id="outline-container-org960ed3b" class="outline-2">
-<h2 id="org960ed3b">Install basic PowerShell profile</h2>
-<div class="outline-text-2" id="text-org960ed3b">
+<div id="outline-container-orgae4db23" class="outline-2">
+<h2 id="orgae4db23">Install basic PowerShell profile</h2>
+<div class="outline-text-2" id="text-orgae4db23">
 <p>
 Install a PowerShell profile on systems that should have a minimum of third party software installed, like servers.
 This will most likely only work on the <code>Desktop</code> version of PowerShell on Windows.
@@ -261,9 +261,13 @@ This will most likely only work on the <code>Desktop</code> version of PowerShel
 <div class="org-src-container">
 <pre class="src src-powershell"><span style="color: #82aaff;">Set-ExecutionPolicy</span> <span style="color: #f78c6c;">-Scope</span> CurrentUser <span style="color: #f78c6c;">-ExecutionPolicy</span> RemoteSigned <span style="color: #f78c6c;">-Force</span>
 <span style="color: #82aaff;">New-Item</span> <span style="color: #82aaff;">$Profile</span>.CurrentUserAllHosts <span style="color: #f78c6c;">-Force</span>
-iwr <span style="color: #c3e88d;">"https://raw.githubusercontent.com/sdaaish/boot/master/profile.ps1"</span> <span style="color: #f78c6c;">-OutFile</span> <span style="color: #82aaff;">$Profile</span>.CurrentUserAllHosts
+iwr <span style="color: #c3e88d;">"https://boot.charlottendal.net/profile.ps1"</span> <span style="color: #f78c6c;">-OutFile</span> <span style="color: #82aaff;">$Profile</span>.CurrentUserAllHosts
 </pre>
 </div>
+
+<p>
+<a href="https://github.com/sdaaish/boot">GitHub src</a>
+</p>
 </div>
 </div>
 </div>

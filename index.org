@@ -1,5 +1,6 @@
 #+title: System bootstrap
 #+subtitle: Redirecting to Readme...
+#+options: toc:nil num:nil author:nil creator:nil date:nil timestamp:nil
 #+html_head: <meta http-equiv="refresh" content="0; URL=https://boot.charlottendal.net/README.html">
 #+html_head: <link rel="canonical" href="https://boot.charlottendal.net/README.html"></html>
 [[https://boot.charlottendal.net/README.html][Redirecting to web-site...]]

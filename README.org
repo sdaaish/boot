@@ -18,14 +18,14 @@ But a lot of things might need customization anyway. Works on my machine...
 [[file:boot.sh][boot.sh]]
 *** Install
 #+begin_src shell
-curl https://raw.githubusercontent.com/sdaaish/boot/master/boot.sh|bash
+curl https://boot.charlottendal.net/boot.sh|bash
 #+end_src
 ** Windows
 [[file:boot.ps1][boot.ps1]]
 *** Install
 In powershell as admin.
 #+begin_src powershell
-iwr "https://raw.githubusercontent.com/sdaaish/boot/master/boot.ps1" -OutFile boot.ps1
+iwr "https://boot.charlottendal.net/boot.ps1" -OutFile boot.ps1
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 .\boot.ps1
 #+end_src
@@ -35,5 +35,7 @@ This will most likely only work on the =Desktop= version of PowerShell on Window
 #+begin_src powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 New-Item $Profile.CurrentUserAllHosts -Force
-iwr "https://raw.githubusercontent.com/sdaaish/boot/master/profile.ps1" -OutFile $Profile.CurrentUserAllHosts
+iwr "https://boot.charlottendal.net/profile.ps1" -OutFile $Profile.CurrentUserAllHosts
 #+end_src
+
+[[https://github.com/sdaaish/boot][GitHub src]]
