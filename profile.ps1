@@ -117,3 +117,46 @@ Function Update-PSReadLine {
         Start-Process powershell.exe -ArgumentList '-NoProfile Save-Module -Name PSReadLine -Path "C:\Program Files\WindowsPowerShell\Modules" -Force' -Verb RunAs
     }
 }
+
+# Setup colors and change size on older terminals
+Function Set-PSConsole {
+
+    # Set colors
+    $host.ui.RawUI.ForegroundColor = “White”
+    $host.ui.RawUI.BackgroundColor = “Black”
+
+    $colors = @{
+        ErrorBackgroundColor = “Black”
+        WarningBackgroundColor = “Black”
+        VerboseBackgroundColor = “Black”
+        ErrorForegroundColor = “Red”
+        WarningForegroundColor = “DarkYellow”
+        VerboseForegroundColor = “Yellow”
+    }
+    $colors.GetEnumerator()| foreach-object {
+        $host.Privatedata.$($_.key) = $_.value
+    }
+
+    # Setup the buffer
+    $buffer = $host.ui.RawUI.BufferSize
+    $buffer.width = 120
+    $buffer.height = 9999
+    $host.UI.RawUI.Set_BufferSize($buffer)
+
+    # Setup Windowsize based on actual size
+    $maxWS = $host.UI.RawUI.Get_MaxWindowSize()
+    $ws = $host.ui.RawUI.WindowSize
+    if($maxws.width -ge 85){
+        $ws.width = 85
+    }
+    else {
+        $ws.width = $maxws.width
+    }
+    if($maxws.height -ge 42){
+        $ws.height = 42
+    }
+    else {
+        $ws.height = $maxws.height
+    }
+    $host.ui.RawUI.Set_WindowSize($ws)
+}
