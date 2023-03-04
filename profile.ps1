@@ -1,14 +1,20 @@
 # Personal profile for Windows Powershell Desktop Edition, a basic one.
-$readline = @{
-    EditMode = "Emacs"
-    HistorySearchCursorMovesToEnd = $true
-    ContinuationPrompt = ">>"
-    BellStyle = "None"
-    PredictionSource = "HistoryAndPlugin"
-    PredictionViewStyle = "InLineView"
-}
 
-Set-PSReadLineOption @readline
+# Fix for older Windows versions
+#requires -Version 3.0
+
+if ($host.Name -eq 'ConsoleHost'){
+    $readline = @{
+        EditMode = "Emacs"
+        HistorySearchCursorMovesToEnd = $true
+        ContinuationPrompt = ">>"
+        BellStyle = "None"
+        PredictionSource = "HistoryAndPlugin"
+        PredictionViewStyle = "InLineView"
+    }
+
+    Set-PSReadLineOption @readline
+}
 
 # See https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-7.2
 function prompt {
@@ -33,7 +39,16 @@ function prompt {
                  else { '' }
      )
 
-    Write-Host "${time} [PS:${PSEdition}] - ${nextCommand} - ${env:USERNAME}@${env:COMPUTERNAME} ${currentDirectory}`n${context} >" -ForeGroundColor 10 -NoNewLine
+    $ipaddress = Get-NetIPAddress -AddressFamily IPv4| ? InterfaceAlias -notmatch "Loopback"
+    $ipaddress = $ipaddress.ipaddress -join " "
+
+    $promptLine = @(
+        "${time} [PS:${PSEdition}] - ${nextCommand}"
+        "- ${env:USERNAME}@${env:COMPUTERNAME}:[${ipaddress}]"
+        "${currentDirectory}`n${context} >"
+    )
+    $promptline = $promptLine -join " "
+    Write-Host $promptLine  -ForeGroundColor 10 -NoNewLine
     return " "
 }
 
