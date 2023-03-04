@@ -12,7 +12,9 @@ if ($host.Name -eq 'ConsoleHost'){
         PredictionSource = "HistoryAndPlugin"
         PredictionViewStyle = "InLineView"
     }
+}
 
+if ((Get-Module -Name Psreadline).Version -gt 2.1){
     Set-PSReadLineOption @readline
 }
 
@@ -36,8 +38,7 @@ function prompt {
 
     $context = $(if (Test-Path variable:/PSDebugContext) { "[DBG]" }
                  elseif($principal.IsInRole($adminRole)) { "[ADMIN]" }
-                 else { '' }
-     )
+                 else { '' })
 
     $ipaddress = Get-NetIPAddress -AddressFamily IPv4| ? InterfaceAlias -notmatch "Loopback"
     $ipaddress = $ipaddress.ipaddress -join " "
@@ -48,7 +49,7 @@ function prompt {
         "${currentDirectory}`n${context} >"
     )
     $promptline = $promptLine -join " "
-    Write-Host $promptLine  -ForeGroundColor 10 -NoNewLine
+    Write-Host $promptLine  -ForeGroundColor Green -BackGroundColor Black -NoNewLine
     return " "
 }
 
