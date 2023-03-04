@@ -31,11 +31,16 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 #+end_src
 * Install basic PowerShell profile
 Install a PowerShell profile on systems that should have a minimum of third party software installed, like servers.
-This will most likely only work on the =Desktop= version of PowerShell on Windows.
+This will most likely only work on the =Desktop= version of PowerShell on Windows, ie 4.0 and up.
+
 #+begin_src powershell
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls11 -bor [System.Net.SecurityProtocolType]::Tls12
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 New-Item $Profile.CurrentUserAllHosts -Force
-iwr "https://boot.charlottendal.net/profile.ps1" -OutFile $Profile.CurrentUserAllHosts
+iwr "https://boot.charlottendal.net/profile.ps1" -OutFile $Profile
+. $profile
+Set-PSConsole
+
 #+end_src
 
 [[https://github.com/sdaaish/boot][GitHub src]]
