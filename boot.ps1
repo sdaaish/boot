@@ -87,8 +87,8 @@ if (-not $isLinux) {
         Install-PackageProvider -Name NuGet -Scope CurrentUser -Force -ForceBootStrap
     }
     finally {
-	Register-PackageSource -Name nuget.org -Location https://www.nuget.org/api/v2 -ProviderName NuGet
-	Set-PackageSource -Name nuget.org -Trusted
+        Register-PackageSource -Name nuget.org -Location https://www.nuget.org/api/v2 -ProviderName NuGet
+        Set-PackageSource -Name nuget.org -Trusted
     }
 }
 
@@ -156,14 +156,14 @@ if (-not $isLinux){
 
 # Create path to make the rest work
 $path =  $(
-		'C:\Program Files\PowerShell\7'
+    'C:\Program Files\PowerShell\7'
     'C:\Program Files\Git\bin'
     'C:\Program Files\7-Zip'
-		'C:\Program Files\starship\bin\'
+    'C:\Program Files\starship\bin\'
 )
 
 $oldpath =$env:path -split ";"
-$env:path = (($oldpath + $path) -join ";") -replace ';;+',';'
+$env:path = (($oldpath + $path) -join ";") -replace ";{2,}",";"
 
 # Get dotgit repository
 Install-DotGit -Force
