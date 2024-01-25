@@ -70,13 +70,6 @@ foreach($dir in $dirs){
     New-Item -Path (Join-Path -Path $homedir -ChildPath $dir) -ItemType Directory -Force|Out-Null
 }
 
-# My own repository
-$RepoSource = @{
-    Name = "AzurePowershellModules"
-    Location = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
-    Provider = "NuGet"
-}
-
 # Set defaults
 Write-Verbose "Installing NuGet"
 if (-not $isLinux) {
@@ -120,6 +113,13 @@ switch ($version) {
     "Core" {Save-Module PSReadLine -Path 'C:\Program Files\PowerShell\Modules\' -Force}
 }
 
+# My own repository
+$RepoSource = @{
+    Name = "AzurePowershellModules"
+    Location = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
+    Provider = "NuGet"
+}
+
 # The settings for my local Powershell Modules Repository
 $LocalRepositorySplat = @{
     Name = $RepoSource.Name
@@ -129,19 +129,30 @@ $LocalRepositorySplat = @{
     PackageManagementProvider = $RepoSource.Provider
 }
 
-# Register the repository
+# Register the repository for PowerShellGet, the old method
 Write-Verbose "Registering my module."
 Register-PSRepository @LocalRepositorySplat -ErrorAction Ignore
 Save-Module -Name MyModule -Path $ModulePath -Repository $RepoSource.Name -Force
 Import-Module MyModule -Force
 
+# Register the repository for Microsoft.PowerShell.PSResourceGet
+# This supports version 3
+$RepoSource = @{
+    Name = "AzurePowershellModules"
+    Uri = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v3/index.json"
+    Trusted = $true
+    Priority = 40
+}
+
+Register-PSResourceRepository @RepoSource
+
 if (-not $isLinux){
     Write-Verbose "Installing winget."
     try {
-	Install-Winget -ErrorAction Stop
+        Install-Winget -ErrorAction Stop
     }
     catch {
-	throw "Failed to install winget"
+        throw "Failed to install winget"
     }
 }
 
