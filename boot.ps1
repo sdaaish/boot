@@ -59,8 +59,8 @@ $dirs = @(
     "work"
     "code"
     ".local"
-    ".local/WindowsPowerShell/Modules"
-    ".local/PowerShell/Modules"
+    ".local/share/WindowsPowerShell/Modules"
+    ".local/share/PowerShell/Modules"
     ".config/git"
 )
 
@@ -94,7 +94,7 @@ if ($isLinux){
         "Core" {$version = "PowerShell/Modules"}
         "Desktop" { $version = "WindowsPowerShell/Modules"}
     }
-    $ModulePath = Join-Path -Path (Resolve-Path "~/.local") -ChildPath $version
+    $ModulePath = Join-Path -Path (Resolve-Path "~/.local/share") -ChildPath $version
 }
 
 # Add local Module-directory to ModulePath
@@ -176,16 +176,13 @@ $path =  $(
 $oldpath =$env:path -split ";"
 $env:path = (($oldpath + $path) -join ";") -replace ";{2,}",";"
 
-# Get dotgit repository
-Install-DotGit -Force
-
 $text = @"
 `$StartTime = Get-Date
 . ~/.config/powershell/profile.ps1
 "@
 
-$DesktopProfile = powershell -Command {$profile} -Nolo -Nop -Exe Bypass
-$CoreProfile = pwsh -Command {$profile} -Nolo -Nop -Exe Bypass
+$DesktopProfile = powershell -Command {$PROFILE.CurrentUserAllHosts} -Nolo -Nop -Exe Bypass
+$CoreProfile = pwsh -Command {$PROFILE.CurrentUserAllHosts} -Nolo -Nop -Exe Bypass
 New-Item -Path (Split-Path $DesktopProfile -Parent) -ItemType Directory -Force|Out-Null
 New-Item -Path (Split-Path $CoreProfile -Parent) -ItemType Directory -Force|Out-Null
 Add-Content -Path $DesktopProfile -Value $text
