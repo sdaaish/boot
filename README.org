@@ -2,26 +2,31 @@
 #+title: README
 #+options: toc:nil num:nil author:nil creator:nil date:nil timestamp:nil
 #+html_head: <link rel="stylesheet" type="text/css" href="css/simple.css" />
-#+html_head: <style> #content{max-width:1800px;}</style>
+#+html_head: <style> #content{max-width:1200px;}</style>
 #+html_head_extra: <style type="text/css">
 #+html_head_extra:  pre.src-powershell{ background:#191970;color:#daa520;}
 #+html_head_extra:  pre.src-shell{ color:black;}
 #+html_head_extra:  pre.src:hover:before { display: none; }
 #+html_head_extra:  pre.example{ background:#e3e3e3; color:black; }
 #+html_head_extra: </style>
+#+startup: indent show2levels
 
 
 * Simple bootstrap scripts for new installations.
 The intention for these scripts are to setup a new system in a standardized way with minimum user intervention.
 But a lot of things might need customization anyway. Works on my machine...
+
 ** Linux
 [[file:boot.sh][boot.sh]]
+
 *** Install
 #+begin_src shell
 curl https://boot.charlottendal.net/boot.sh|bash
 #+end_src
+
 ** Windows
 [[file:boot.ps1][boot.ps1]]
+
 *** Install
 In powershell as admin.
 #+begin_src powershell
