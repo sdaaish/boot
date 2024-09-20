@@ -1,1 +1,3 @@
-curl -sS https://starship.rs/install.sh | sh
+#!/usr/bin/env bash
+
+curl -sSLf https://starship.rs/install.sh | sh

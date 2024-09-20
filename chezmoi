@@ -1,1 +1,4 @@
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply $GITHUB_USERNAME
+#!/usr/bin/env bash
+
+[ -z "${GITHUB_USERNAME}" ] && GITHUB_USERNAME="sdaaish"
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "${GITHUB_USERNAME}"
