@@ -8,7 +8,7 @@ Installs WinGet and dependencies if not already installed, and then Chezmoi WinG
 
 function Install-Winget {
     [cmdletbinding()]
-    params()
+    param()
 
     process {
         $progressPreference = 'silentlyContinue'
