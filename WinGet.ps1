@@ -14,7 +14,7 @@ function Install-Winget {
         $progressPreference = 'SilentlyContinue'
         Write-Information "Downloading WinGet and its dependencies..."
 
-        $downloads = Resolve-Path ${env:Downloads}
+        $downloads = Join-Path (Resolve-Path ${env:USERPROFILE}) Downloads
         pushd $downloads
 
         Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
