@@ -26,6 +26,17 @@ curl https://boot.charlottendal.net/boot.sh|bash
 #+end_src
 
 ** Windows
+*** Install Winget
+[[file:WinGet.ps1][WinGet.ps1]]
+
+#+name: Install-WinGet
+#+begin_src powershell
+iwr "https://boot.charlottendal.net/WinGet.ps1" -OutFile WinGet.ps1
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+.\WinGet.ps1
+#+end_src
+
+*** Boot script
 [[file:boot.ps1][boot.ps1]]
 
 *** Install
