@@ -27,6 +27,8 @@ curl https://boot.charlottendal.net/boot.sh|bash
 
 ** Windows
 *** Install WinGet
+The new installation script, WIP.
+
 [[file:WinGet.ps1][WinGet.ps1]]
 
 #+name: Install-WinGet

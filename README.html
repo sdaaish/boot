@@ -192,7 +192,7 @@
   .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/simple.css" />
-<style> #content{max-width:1800px;}</style>
+<style> #content{max-width:1200px;}</style>
 <style type="text/css">
 pre.src-powershell{ background:#191970;color:#daa520;}
 pre.src-shell{ color:black;}
@@ -203,24 +203,24 @@ pre.example{ background:#e3e3e3; color:black; }
 <body>
 <div id="content" class="content">
 <h1 class="title">README</h1>
-<div id="outline-container-org4fda0a6" class="outline-2">
-<h2 id="org4fda0a6">Simple bootstrap scripts for new installations.</h2>
-<div class="outline-text-2" id="text-org4fda0a6">
+<div id="outline-container-org88646db" class="outline-2">
+<h2 id="org88646db">Simple bootstrap scripts for new installations.</h2>
+<div class="outline-text-2" id="text-org88646db">
 <p>
 The intention for these scripts are to setup a new system in a standardized way with minimum user intervention.
 But a lot of things might need customization anyway. Works on my machine&#x2026;
 </p>
 </div>
-<div id="outline-container-orga0773cf" class="outline-3">
-<h3 id="orga0773cf">Linux</h3>
-<div class="outline-text-3" id="text-orga0773cf">
+<div id="outline-container-orga453cbb" class="outline-3">
+<h3 id="orga453cbb">Linux</h3>
+<div class="outline-text-3" id="text-orga453cbb">
 <p>
 <a href="boot.sh">boot.sh</a>
 </p>
 </div>
-<div id="outline-container-orgc718b15" class="outline-4">
-<h4 id="orgc718b15">Install</h4>
-<div class="outline-text-4" id="text-orgc718b15">
+<div id="outline-container-org13a16e9" class="outline-4">
+<h4 id="org13a16e9">Install</h4>
+<div class="outline-text-4" id="text-org13a16e9">
 <div class="org-src-container">
 <pre class="src src-shell">curl https://boot.charlottendal.net/boot.sh|bash
 </pre>
@@ -228,22 +228,45 @@ But a lot of things might need customization anyway. Works on my machine&#x2026;
 </div>
 </div>
 </div>
-<div id="outline-container-orgc62f896" class="outline-3">
-<h3 id="orgc62f896">Windows</h3>
-<div class="outline-text-3" id="text-orgc62f896">
+<div id="outline-container-orgbcf7491" class="outline-3">
+<h3 id="orgbcf7491">Windows</h3>
+<div class="outline-text-3" id="text-orgbcf7491">
+</div>
+<div id="outline-container-org2bd8d67" class="outline-4">
+<h4 id="org2bd8d67">Install WinGet</h4>
+<div class="outline-text-4" id="text-org2bd8d67">
+<p>
+The new installation script, WIP.
+</p>
+
+<p>
+<a href="WinGet.ps1">WinGet.ps1</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-powershell" id="orgbc1ddb9"><span style="color: #feacd0;">Set-ExecutionPolicy</span> <span style="color: #00bcff;">-Scope</span> CurrentUser <span style="color: #00bcff;">-ExecutionPolicy</span> RemoteSigned <span style="color: #00bcff;">-Force</span>
+iex <span style="color: #ffff00;">(</span>iwr <span style="color: #79a8ff;">"https://boot.charlottendal.net/WinGet.ps1"</span><span style="color: #ffff00;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3b0136b" class="outline-4">
+<h4 id="org3b0136b">Boot script</h4>
+<div class="outline-text-4" id="text-org3b0136b">
 <p>
 <a href="boot.ps1">boot.ps1</a>
 </p>
 </div>
-<div id="outline-container-org5721396" class="outline-4">
-<h4 id="org5721396">Install</h4>
-<div class="outline-text-4" id="text-org5721396">
+</div>
+<div id="outline-container-org73110db" class="outline-4">
+<h4 id="org73110db">Install</h4>
+<div class="outline-text-4" id="text-org73110db">
 <p>
 In powershell as admin.
 </p>
 <div class="org-src-container">
-<pre class="src src-powershell">iwr <span style="color: #f3f99d;">"https://boot.charlottendal.net/boot.ps1"</span> <span style="color: #5af78e;">-OutFile</span> boot.ps1
-<span style="color: #57c7ff;">Set-ExecutionPolicy</span> <span style="color: #5af78e;">-Scope</span> CurrentUser <span style="color: #5af78e;">-ExecutionPolicy</span> RemoteSigned <span style="color: #5af78e;">-Force</span>
+<pre class="src src-powershell">iwr <span style="color: #79a8ff;">"https://boot.charlottendal.net/boot.ps1"</span> <span style="color: #00bcff;">-OutFile</span> boot.ps1
+<span style="color: #feacd0;">Set-ExecutionPolicy</span> <span style="color: #00bcff;">-Scope</span> CurrentUser <span style="color: #00bcff;">-ExecutionPolicy</span> RemoteSigned <span style="color: #00bcff;">-Force</span>
 .\boot.ps1
 </pre>
 </div>
@@ -251,21 +274,21 @@ In powershell as admin.
 </div>
 </div>
 </div>
-<div id="outline-container-org18b9e10" class="outline-2">
-<h2 id="org18b9e10">Install basic PowerShell profile</h2>
-<div class="outline-text-2" id="text-org18b9e10">
+<div id="outline-container-orge7718ac" class="outline-2">
+<h2 id="orge7718ac">Install basic PowerShell profile</h2>
+<div class="outline-text-2" id="text-orge7718ac">
 <p>
 Install a PowerShell profile on systems that should have a minimum of third party software installed, like servers.
 This will most likely only work on the <code>Desktop</code> version of PowerShell on Windows, ie 4.0 and up.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-powershell"><span style="color: #57c7ff;">[</span><span style="color: #9aedfe;">System.Net.ServicePointManager</span><span style="color: #57c7ff;">]</span>::SecurityProtocol = <span style="color: #57c7ff;">[</span><span style="color: #9aedfe;">System.Net.SecurityProtocolType</span><span style="color: #57c7ff;">]</span>::Tls11 <span style="color: #ff6ac1;">-bor</span> <span style="color: #57c7ff;">[</span><span style="color: #9aedfe;">System.Net.SecurityProtocolType</span><span style="color: #57c7ff;">]</span>::Tls12
-<span style="color: #57c7ff;">Set-ExecutionPolicy</span> <span style="color: #5af78e;">-Scope</span> CurrentUser <span style="color: #5af78e;">-ExecutionPolicy</span> RemoteSigned <span style="color: #5af78e;">-Force</span>
-<span style="color: #57c7ff;">New-Item</span> <span style="color: #ff6ac1;">$Profile</span>.CurrentUserAllHosts <span style="color: #5af78e;">-Force</span>
-iwr <span style="color: #f3f99d;">"https://boot.charlottendal.net/profile.ps1"</span> <span style="color: #5af78e;">-OutFile</span> <span style="color: #ff6ac1;">$Profile</span>
-. <span style="color: #ff6ac1;">$profile</span>
-<span style="color: #57c7ff;">Set-PSConsole</span>
+<pre class="src src-powershell"><span style="color: #ffff00; font-weight: bold;">[</span><span style="color: #6ae4b9; font-weight: bold;">System.Net.ServicePointManager</span><span style="color: #ffff00; font-weight: bold;">]</span>::SecurityProtocol = <span style="color: #ffff00; font-weight: bold;">[</span><span style="color: #6ae4b9; font-weight: bold;">System.Net.SecurityProtocolType</span><span style="color: #ffff00; font-weight: bold;">]</span>::Tls11 <span style="color: #f78fe7; font-weight: bold;">-bor</span> <span style="color: #ffff00; font-weight: bold;">[</span><span style="color: #6ae4b9; font-weight: bold;">System.Net.SecurityProtocolType</span><span style="color: #ffff00; font-weight: bold;">]</span>::Tls12
+<span style="color: #feacd0;">Set-ExecutionPolicy</span> <span style="color: #00bcff;">-Scope</span> CurrentUser <span style="color: #00bcff;">-ExecutionPolicy</span> RemoteSigned <span style="color: #00bcff;">-Force</span>
+<span style="color: #feacd0;">New-Item</span> <span style="color: #f78fe7; font-weight: bold;">$Profile</span>.CurrentUserAllHosts <span style="color: #00bcff;">-Force</span>
+iwr <span style="color: #79a8ff;">"https://boot.charlottendal.net/profile.ps1"</span> <span style="color: #00bcff;">-OutFile</span> <span style="color: #f78fe7; font-weight: bold;">$Profile</span>
+. <span style="color: #f78fe7; font-weight: bold;">$profile</span>
+<span style="color: #feacd0;">Set-PSConsole</span>
 
 </pre>
 </div>
@@ -274,10 +297,20 @@ iwr <span style="color: #f3f99d;">"https://boot.charlottendal.net/profile.ps1"</
 <a href="https://github.com/sdaaish/boot">GitHub src</a>
 </p>
 </div>
+<div id="outline-container-org46a227b" class="outline-3">
+<h3 id="org46a227b">Testing</h3>
+<div class="outline-text-3" id="text-org46a227b">
+<p>
+Put certificates if needed in the <b>Build</b> folder and do a <code>gen-sandboxconf.ps1</code> in that folder.
+Start with <code>.\boot-sandbox.wsb</code>
+</p>
+
+<p>
+This will start the Windows sandbox and run the installation.
+</p>
 </div>
 </div>
-<div id="postamble" class="status">
-<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
 </div>
 </body>
 </html>

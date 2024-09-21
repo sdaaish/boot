@@ -11,8 +11,12 @@ function Install-Winget {
     param()
 
     process {
-        $progressPreference = 'silentlyContinue'
+        $progressPreference = 'SilentlyContinue'
         Write-Information "Downloading WinGet and its dependencies..."
+
+        $downloads = Resolve-Path ${env:Downloads}
+        pushd $downloads
+
         Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
         Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
         Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.8.6/Microsoft.UI.Xaml.2.8.x64.appx -OutFile Microsoft.UI.Xaml.2.8.x64.appx
@@ -21,6 +25,11 @@ function Install-Winget {
         Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
         Add-AppxPackage Microsoft.UI.Xaml.2.8.x64.appx
         Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+
+        Write-Information "Cleaning up"
+        Remove-Item Microsoft.VCLibs.x64.14.00.Desktop.appx -Force
+        Remove-Item Microsoft.UI.Xaml.2.8.x64.appx -Force
+        Remove-Item Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -Force
     }
 }
 
@@ -33,7 +42,7 @@ Function refreshenv {
 }
 
 # Install WinGet if not already installed
-try { Get-Command winget.exe -erroraction stop }
+try { Get-Command winget.exe -ErrorAction Stop }
 catch { Install-Winget }
 
 # Update the path
