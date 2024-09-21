@@ -33,14 +33,16 @@ Function refreshenv {
 }
 
 # Install WinGet if not already installed
-if (-not (Get-Command winget.exe)){
-    Install-Winget
-}
+try { Get-Command winget.exe -erroraction stop }
+catch { Install-Winget }
 
 # Update the path
 refreshenv
 
 # Install chezmoi
-if (-not (Get-Command chezmoi.exe)){
-    winget install --id twpayne.chezmoi --source winget --accept-source-agreements
-}
+try { Get-Command chezmoi.exe -ErrorAction Stop}
+catch { winget install --id twpayne.chezmoi --source winget --accept-source-agreements }
+
+refreshenv
+
+Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
