@@ -12,6 +12,7 @@
 #+startup: indent show2levels
 
 
+
 * Simple bootstrap scripts for new installations.
 The intention for these scripts are to setup a new system in a standardized way with minimum user intervention.
 But a lot of things might need customization anyway. Works on my machine...

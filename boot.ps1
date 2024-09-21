@@ -15,8 +15,7 @@ tbd
 Some notes
 #>
 [cmdletbinding()]
-Param (
-)
+Param ()
 
 # Enable logging
 Start-Transcript
@@ -120,6 +119,13 @@ $RepoSource = @{
     Provider = "NuGet"
 }
 
+# My own repository
+$RepoSource = @{
+    Name = "AzurePowershellModules"
+    Location = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
+    Provider = "NuGet"
+}
+
 # The settings for my local Powershell Modules Repository
 $LocalRepositorySplat = @{
     Name = $RepoSource.Name
@@ -149,21 +155,31 @@ Register-PSResourceRepository @RepoSource
 if (-not $isLinux){
     Write-Verbose "Installing winget."
     try {
+<<<<<<< Updated upstream
         Install-Winget -ErrorAction Stop
     }
     catch {
         throw "Failed to install winget"
+=======
+	      Install-Winget -ErrorAction Stop
+    }
+    catch {
+	      throw "Failed to install winget"
+>>>>>>> Stashed changes
     }
 }
 
 # Install software with Winget
-& winget install Git.Git --source winget  --accept-package-agreements --accept-source-agreements
-& winget install 7zip.7zip --source winget --accept-package-agreements --accept-source-agreements --silent
-& winget install Microsoft.PowerShell --source winget --accept-package-agreements --accept-source-agreements --silent
-& winget install Starship.Starship --source winget --accept-package-agreements --accept-source-agreements --silent
+$options = @("--source", "winget", "--accept-package-agreements", "--accept-source-agreements")
+$silent = @($options, "--silent")
+& winget install Git.Git $options
+& winget install 7zip.7zip $silent
+& winget install Microsoft.PowerShell $silent
+& winget install Starship.Starship $silent
+& winget install twpayne.chezmoi $silent
 
-# Windows Terminal needs a workaround, see https://github.com/microsoft/winget-cli/issues/2176
-& winget install  Microsoft.WindowsTerminal --source winget --accept-package-agreements --accept-source-agreements  --version 1.12.10982.0 --scope user
+# Windows Terminal
+& winget install  Microsoft.WindowsTerminal $options  --scope user
 
 # Create path to make the rest work
 $path =  $(
@@ -176,23 +192,21 @@ $path =  $(
 $oldpath =$env:path -split ";"
 $env:path = (($oldpath + $path) -join ";") -replace ";{2,}",";"
 
-# Get dotgit repository
-Install-DotGit -Force
-
+$fileName = ".config{0}powershell{0}profile.ps1" -f [System.IO.Path]::DirectorySeparatorChar
 $text = @"
-`$StartTime = Get-Date
-. ~/.config/powershell/profile.ps1
+`$StartTime = [System.Diagnostics.Stopwatch]::new()
+. $(Join-Path (Resolve-Path ~) $fileName))
 "@
-
-$DesktopProfile = powershell -Command {$profile} -Nolo -Nop -Exe Bypass
-$CoreProfile = pwsh -Command {$profile} -Nolo -Nop -Exe Bypass
-New-Item -Path (Split-Path $DesktopProfile -Parent) -ItemType Directory -Force|Out-Null
-New-Item -Path (Split-Path $CoreProfile -Parent) -ItemType Directory -Force|Out-Null
-Add-Content -Path $DesktopProfile -Value $text
-Add-Content -Path $CoreProfile -Value $text
 
 # Set the executionpolicy for the system and not just the process. Only for Windows
 if (-not $isLinux) {
+    $DesktopProfile = powershell -Command {$profile} -NoLogo -NoProfile -ExecutionProfile Bypass
+    $CoreProfile = pwsh -Command {$profile} -NoLogo -NoProfile -ExecutionProfile Bypass
+    New-Item -Path (Split-Path $DesktopProfile -Parent) -ItemType Directory -Force|Out-Null
+    New-Item -Path (Split-Path $CoreProfile -Parent) -ItemType Directory -Force|Out-Null
+    Add-Content -Path $DesktopProfile -Value $text
+    Add-Content -Path $CoreProfile -Value $text
+
     Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force -Verbose -ErrorAction Ignore
 }
 

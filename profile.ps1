@@ -88,6 +88,7 @@ function llt {
     )
     Get-ChildItem $Path -Attributes H,!H,A,!A,S,!S| Sort-Object lastwritetime
 }
+
 # Alias for help-command
 function gh([string]$help) {
     $ErrorActionPreference = "Ignore"
@@ -123,16 +124,16 @@ Function Update-PSReadLine {
 Function Set-PSConsole {
 
     # Set colors
-    $host.ui.RawUI.ForegroundColor = “White”
-    $host.ui.RawUI.BackgroundColor = “Black”
+    $host.ui.RawUI.ForegroundColor = "White"
+    $host.ui.RawUI.BackgroundColor = "Black"
 
     $colors = @{
-        ErrorBackgroundColor = “Black”
-        WarningBackgroundColor = “Black”
-        VerboseBackgroundColor = “Black”
-        ErrorForegroundColor = “Red”
-        WarningForegroundColor = “DarkYellow”
-        VerboseForegroundColor = “Yellow”
+        ErrorBackgroundColor = "Black"
+        WarningBackgroundColor = "Black"
+        VerboseBackgroundColor = "Black"
+        ErrorForegroundColor = "Red"
+        WarningForegroundColor = "DarkYellow"
+        VerboseForegroundColor = "Yellow"
     }
     $colors.GetEnumerator()| foreach-object {
         $host.Privatedata.$($_.key) = $_.value
