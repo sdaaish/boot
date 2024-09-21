@@ -155,17 +155,10 @@ Register-PSResourceRepository @RepoSource
 if (-not $isLinux){
     Write-Verbose "Installing winget."
     try {
-<<<<<<< Updated upstream
         Install-Winget -ErrorAction Stop
     }
     catch {
         throw "Failed to install winget"
-=======
-	      Install-Winget -ErrorAction Stop
-    }
-    catch {
-	      throw "Failed to install winget"
->>>>>>> Stashed changes
     }
 }
 
