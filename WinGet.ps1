@@ -1,20 +1,46 @@
 <#
 .SYNOPSIS
-Install WinGet
+Install Chezmoi
 
 .DESCRIPTION
-Downloads WinGet and dependencies and installs it locally.
+Installs WinGet and dependencies if not already installed, and then Chezmoi WinGet.
 #>
 
-process {
-    $progressPreference = 'silentlyContinue'
-    Write-Information "Downloading WinGet and its dependencies..."
-    Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-    Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-    Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.8.6/Microsoft.UI.Xaml.2.8.x64.appx -OutFile Microsoft.UI.Xaml.2.8.x64.appx
+function Install-Winget {
+    [cmdletbinding()]
+    params()
 
-    Write-Information "Adding packages"
-    Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
-    Add-AppxPackage Microsoft.UI.Xaml.2.8.x64.appx
-    Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+    process {
+        $progressPreference = 'silentlyContinue'
+        Write-Information "Downloading WinGet and its dependencies..."
+        Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+        Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
+        Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.8.6/Microsoft.UI.Xaml.2.8.x64.appx -OutFile Microsoft.UI.Xaml.2.8.x64.appx
+
+        Write-Information "Adding packages"
+        Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
+        Add-AppxPackage Microsoft.UI.Xaml.2.8.x64.appx
+        Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+    }
+}
+
+Function refreshenv {
+    $paths = @(
+				([System.Environment]::GetEnvironmentVariable("Path", "Machine") -split ([io.path]::PathSeparator))
+				([System.Environment]::GetEnvironmentVariable("Path", "User") -split ([io.path]::PathSeparator))
+    )
+    $env:path = ($paths | Select-Object -Unique) -join ([io.path]::PathSeparator)
+}
+
+# Install WinGet if not already installed
+if (-not (Get-Command winget.exe)){
+    Install-Winget
+}
+
+# Update the path
+refreshenv
+
+# Install chezmoi
+if (-not (Get-Command chezmoi.exe)){
+    winget install --id twpayne.chezmoi --source winget --accept-source-agreements
 }
