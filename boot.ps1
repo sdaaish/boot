@@ -112,27 +112,14 @@ switch ($version) {
     "Core" {Save-Module PSReadLine -Path 'C:\Program Files\PowerShell\Modules\' -Force}
 }
 
-# My own repository
-$RepoSource = @{
-    Name = "AzurePowershellModules"
-    Location = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
-    Provider = "NuGet"
-}
-
-# My own repository
-$RepoSource = @{
-    Name = "AzurePowershellModules"
-    Location = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
-    Provider = "NuGet"
-}
-
 # The settings for my local Powershell Modules Repository
 $LocalRepositorySplat = @{
-    Name = $RepoSource.Name
-    SourceLocation = $RepoSource.Location
-    ScriptSourceLocation = $RepoSource.Location
+    Name = "AzurePowershellModules"
+    SourceLocation = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
+    ScriptSourceLocation = "https://pkgs.dev.azure.com/sdaaish/PSModules/_packaging/AzurePSModuleRepo/nuget/v2"
     InstallationPolicy = "Trusted"
     PackageManagementProvider = $RepoSource.Provider
+    Provider = "NuGet"
 }
 
 # Register the repository for PowerShellGet, the old method
