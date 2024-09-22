@@ -30,6 +30,7 @@ function Install-Winget {
         Remove-Item Microsoft.VCLibs.x64.14.00.Desktop.appx -Force
         Remove-Item Microsoft.UI.Xaml.2.8.x64.appx -Force
         Remove-Item Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -Force
+        popd
     }
 }
 
@@ -53,5 +54,3 @@ try { Get-Command chezmoi.exe -ErrorAction Stop}
 catch { winget install --id twpayne.chezmoi --source winget --accept-source-agreements }
 
 refreshenv
-
-Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
