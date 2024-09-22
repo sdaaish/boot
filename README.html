@@ -203,24 +203,24 @@ pre.example{ background:#e3e3e3; color:black; }
 <body>
 <div id="content" class="content">
 <h1 class="title">README</h1>
-<div id="outline-container-org88646db" class="outline-2">
-<h2 id="org88646db">Simple bootstrap scripts for new installations.</h2>
-<div class="outline-text-2" id="text-org88646db">
+<div id="outline-container-org4dccec1" class="outline-2">
+<h2 id="org4dccec1">Simple bootstrap scripts for new installations.</h2>
+<div class="outline-text-2" id="text-org4dccec1">
 <p>
 The intention for these scripts are to setup a new system in a standardized way with minimum user intervention.
 But a lot of things might need customization anyway. Works on my machine&#x2026;
 </p>
 </div>
-<div id="outline-container-orga453cbb" class="outline-3">
-<h3 id="orga453cbb">Linux</h3>
-<div class="outline-text-3" id="text-orga453cbb">
+<div id="outline-container-orgec7c128" class="outline-3">
+<h3 id="orgec7c128">Linux</h3>
+<div class="outline-text-3" id="text-orgec7c128">
 <p>
 <a href="boot.sh">boot.sh</a>
 </p>
 </div>
-<div id="outline-container-org13a16e9" class="outline-4">
-<h4 id="org13a16e9">Install</h4>
-<div class="outline-text-4" id="text-org13a16e9">
+<div id="outline-container-orgca71a4d" class="outline-4">
+<h4 id="orgca71a4d">Install</h4>
+<div class="outline-text-4" id="text-orgca71a4d">
 <div class="org-src-container">
 <pre class="src src-shell">curl https://boot.charlottendal.net/boot.sh|bash
 </pre>
@@ -228,55 +228,56 @@ But a lot of things might need customization anyway. Works on my machine&#x2026;
 </div>
 </div>
 </div>
-<div id="outline-container-orgbcf7491" class="outline-3">
-<h3 id="orgbcf7491">Windows</h3>
-<div class="outline-text-3" id="text-orgbcf7491">
+<div id="outline-container-org8da3242" class="outline-3">
+<h3 id="org8da3242">Windows</h3>
+<div class="outline-text-3" id="text-org8da3242">
 </div>
-<div id="outline-container-org2bd8d67" class="outline-4">
-<h4 id="org2bd8d67">Install WinGet</h4>
-<div class="outline-text-4" id="text-org2bd8d67">
+<div id="outline-container-org8ea4ad5" class="outline-4">
+<h4 id="org8ea4ad5">Install WinGet</h4>
+<div class="outline-text-4" id="text-org8ea4ad5">
 <p>
-The new installation script, WIP.
+The new installation script, using winget and chezmoi.
 </p>
 
 <p>
-<a href="WinGet.ps1">WinGet.ps1</a>
+<a href="boot.ps1">boot.ps1</a>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-powershell" id="orgbc1ddb9"><span style="color: #feacd0;">Set-ExecutionPolicy</span> <span style="color: #00bcff;">-Scope</span> CurrentUser <span style="color: #00bcff;">-ExecutionPolicy</span> RemoteSigned <span style="color: #00bcff;">-Force</span>
-iex <span style="color: #ffff00;">(</span>iwr <span style="color: #79a8ff;">"https://boot.charlottendal.net/WinGet.ps1"</span><span style="color: #ffff00;">)</span>
+<pre class="src src-powershell" id="org0d32da9"><span style="color: #feacd0;">Set-ExecutionPolicy</span> <span style="color: #00bcff;">-Scope</span> CurrentUser <span style="color: #00bcff;">-ExecutionPolicy</span> RemoteSigned <span style="color: #00bcff;">-Force</span>
+iex <span style="color: #ffff00;">(</span>iwr <span style="color: #79a8ff;">"https://boot.charlottendal.net/boot.ps1"</span><span style="color: #ffff00;">)</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org3b0136b" class="outline-4">
-<h4 id="org3b0136b">Boot script</h4>
-<div class="outline-text-4" id="text-org3b0136b">
+<div id="outline-container-orge1334ba" class="outline-4">
+<h4 id="orge1334ba">Old Boot script</h4>
+<div class="outline-text-4" id="text-orge1334ba">
 <p>
-<a href="boot.ps1">boot.ps1</a>
+This was my previous version, keep here as reference.
+<a href="boot.old.ps1">boot.old.ps1</a>
 </p>
 </div>
 </div>
-<div id="outline-container-org73110db" class="outline-4">
-<h4 id="org73110db">Install</h4>
-<div class="outline-text-4" id="text-org73110db">
+<div id="outline-container-org9baf1b2" class="outline-4">
+<h4 id="org9baf1b2">Install</h4>
+<div class="outline-text-4" id="text-org9baf1b2">
 <p>
 In powershell as admin.
 </p>
 <div class="org-src-container">
-<pre class="src src-powershell">iwr <span style="color: #79a8ff;">"https://boot.charlottendal.net/boot.ps1"</span> <span style="color: #00bcff;">-OutFile</span> boot.ps1
+<pre class="src src-powershell">iwr <span style="color: #79a8ff;">"https://boot.charlottendal.net/boot.old.ps1"</span> <span style="color: #00bcff;">-OutFile</span> boot.old.ps1
 <span style="color: #feacd0;">Set-ExecutionPolicy</span> <span style="color: #00bcff;">-Scope</span> CurrentUser <span style="color: #00bcff;">-ExecutionPolicy</span> RemoteSigned <span style="color: #00bcff;">-Force</span>
-.\boot.ps1
+.\boot.old.ps1
 </pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orge7718ac" class="outline-2">
-<h2 id="orge7718ac">Install basic PowerShell profile</h2>
-<div class="outline-text-2" id="text-orge7718ac">
+<div id="outline-container-org71a1556" class="outline-2">
+<h2 id="org71a1556">Install basic PowerShell profile</h2>
+<div class="outline-text-2" id="text-org71a1556">
 <p>
 Install a PowerShell profile on systems that should have a minimum of third party software installed, like servers.
 This will most likely only work on the <code>Desktop</code> version of PowerShell on Windows, ie 4.0 and up.
@@ -297,9 +298,9 @@ iwr <span style="color: #79a8ff;">"https://boot.charlottendal.net/profile.ps1"</
 <a href="https://github.com/sdaaish/boot">GitHub src</a>
 </p>
 </div>
-<div id="outline-container-org46a227b" class="outline-3">
-<h3 id="org46a227b">Testing</h3>
-<div class="outline-text-3" id="text-org46a227b">
+<div id="outline-container-orge6fce3b" class="outline-3">
+<h3 id="orge6fce3b">Testing</h3>
+<div class="outline-text-3" id="text-orge6fce3b">
 <p>
 Put certificates if needed in the <b>Build</b> folder and do a <code>gen-sandboxconf.ps1</code> in that folder.
 Start with <code>.\boot-sandbox.wsb</code>

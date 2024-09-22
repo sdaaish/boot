@@ -27,25 +27,26 @@ curl https://boot.charlottendal.net/boot.sh|bash
 
 ** Windows
 *** Install WinGet
-The new installation script, WIP.
+The new installation script, using winget and chezmoi.
 
-[[file:WinGet.ps1][WinGet.ps1]]
+[[file:boot.ps1][boot.ps1]]
 
 #+name: Install-WinGet
 #+begin_src powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
-iex (iwr "https://boot.charlottendal.net/WinGet.ps1")
+iex (iwr "https://boot.charlottendal.net/boot.ps1")
 #+end_src
 
-*** Boot script
-[[file:boot.ps1][boot.ps1]]
+*** Old Boot script
+This was my previous version, keep here as reference.
+[[file:boot.old.ps1][boot.old.ps1]]
 
 *** Install
 In powershell as admin.
 #+begin_src powershell
-iwr "https://boot.charlottendal.net/boot.ps1" -OutFile boot.ps1
+iwr "https://boot.charlottendal.net/boot.old.ps1" -OutFile boot.old.ps1
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
-.\boot.ps1
+.\boot.old.ps1
 #+end_src
 
 * Install basic PowerShell profile
