@@ -73,14 +73,13 @@ foreach($dir in $dirs){
 Write-Verbose "Installing NuGet"
 if (-not $isLinux) {
     try {
-        Get-PackageProvider -Name NuGet -ForceBootStrap -ErrorAction Stop| Out-Null
+        Get-PackageProvider -Name NuGet -ForceBootStrap -ListAvailable -ErrorAction Stop| Out-Null
     }
     catch {
         Install-PackageProvider -Name NuGet -Scope CurrentUser -Force -ForceBootStrap
     }
     finally {
-        Register-PackageSource -Name nuget.org -Location https://www.nuget.org/api/v2 -ProviderName NuGet
-        Set-PackageSource -Name nuget.org -Trusted
+        Register-PackageSource -Name NuGet.org -Location https://www.nuget.org/api/v2 -ProviderName NuGet -Trusted
     }
 }
 
